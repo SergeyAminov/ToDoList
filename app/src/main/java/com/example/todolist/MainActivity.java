@@ -3,8 +3,7 @@ package com.example.todolist;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.todolist.CreateEvent.CreateEventActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
         FloatingActionButton fab = findViewById(R.id.createNewEvent);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        */
+
     }
 
     @Override
@@ -58,6 +60,49 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        //Log.d(LOG_TAG, "onStart");
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        //Log.d(LOG_TAG, "onPause");
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        //Log.d(LOG_TAG, "onRestart");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //Log.d(LOG_TAG, "onResume");
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        //Log.d(LOG_TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        //Log.d(LOG_TAG, "onDestroy");
+    }
+
+    public void onClick(View view){
+
+        Intent intent = new Intent(MainActivity.this, CreateEventActivity.class);
+        startActivity(intent);
+
     }
 
 }

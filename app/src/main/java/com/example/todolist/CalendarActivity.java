@@ -3,33 +3,73 @@ package com.example.todolist;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.todolist.CreateEvent.CreateEventActivity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CalendarView;
 
 public class CalendarActivity extends AppCompatActivity {
 
+    private CalendarView calendarView;
+    private String date_ev;
+    public static final String KEY_DATE_EVENT="date";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        calendarView = findViewById(R.id.calendarView);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.createNewEvent);
-        fab.setOnClickListener(new View.OnClickListener() {
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                date_ev = dayOfMonth + "/" + (month+1) + "/" + (year);
             }
         });
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        //Log.d(LOG_TAG, "onStart");
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        //Log.d(LOG_TAG, "onPause");
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        //Log.d(LOG_TAG, "onRestart");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //Log.d(LOG_TAG, "onResume");
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        //Log.d(LOG_TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        //Log.d(LOG_TAG, "onDestroy");
     }
 
     @Override
@@ -58,6 +98,13 @@ public class CalendarActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void createEvent(View view) {
+        String messageDate = date_ev;
+        Intent i = new Intent(this, CreateEventActivity.class);
+        i.putExtra(KEY_DATE_EVENT,messageDate);
+        startActivity(i);
     }
 
 }

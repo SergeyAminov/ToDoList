@@ -1,4 +1,4 @@
-package com.example.todolist;
+package com.example.todolist.DataBase;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,7 +6,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.todolist.DataBase.DataBaseContract;
+
 public class DBHelper extends SQLiteOpenHelper {
+
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = DataBaseContract.DB_NAME;
     private static final String TEXT_TYPE = " TEXT";
@@ -15,6 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TASK =
     "CREATE TABLE " + DataBaseContract.TasksTable.TASKS_TABLE_NAME  + " (" +
     DataBaseContract.TasksTable.ID_FIELD + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+    DataBaseContract.TasksTable.TITLE_FIELD + TEXT_TYPE + COMMA_SEP +
     DataBaseContract.TasksTable.DATE_FIELD + TEXT_TYPE + COMMA_SEP +
     DataBaseContract.TasksTable.DESC_FIELD + TEXT_TYPE + COMMA_SEP +
     DataBaseContract.TasksTable.PLACE_FIELD + TEXT_TYPE + COMMA_SEP +
