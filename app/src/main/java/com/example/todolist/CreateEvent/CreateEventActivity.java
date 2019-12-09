@@ -20,6 +20,7 @@ public class CreateEventActivity extends AppCompatActivity{
     private EditText description;
     private TextView dateOfEvent;
     private TextView timeOfEvent;
+    private CheckBox date_event;
     private CheckBox time_event;
     private CheckBox location_event;
     private DBHelper admin;
@@ -34,6 +35,7 @@ public class CreateEventActivity extends AppCompatActivity{
         dateOfEvent =findViewById(R.id.textViewDate);
         timeOfEvent = findViewById(R.id.textViewTime);
         time_event = findViewById(R.id.checkSetTime);
+        date_event = findViewById(R.id.checkDate);
         description = findViewById(R.id.description_id);
         title = findViewById(R.id.title_id);
         location_event = findViewById(R.id.checkMap);
@@ -49,24 +51,42 @@ public class CreateEventActivity extends AppCompatActivity{
         dateOfEvent.setText(messageDate);
     }
 
+    public void pickDate(View view) {
+        if (date_event.isChecked()) {
+            DialogFragment newFragment = new DatePickerFragment();
+            newFragment.show(getSupportFragmentManager(), "Date picker: ");
+            dateOfEvent.setVisibility(View.VISIBLE);
+        }
+        else {
+            dateOfEvent.setVisibility(View.GONE);
+        }
+
+    }
+
+    public void processDatePickerResult(int year, int month, int day){
+        String month_string = Integer.toString(month+1);
+        String day_string = Integer.toString(day);
+        String year_string = Integer.toString(year);
+        String dateMessage = (month_string + "/"+day_string+"/"+year_string);
+        dateOfEvent.setText(dateMessage);
+    }
+
     public void pickTime(View view) {
-        if (time_event.isChecked())
-        {
+        if (time_event.isChecked()) {
             DialogFragment newFragment = new TimePickerFragment();
             newFragment.show(getSupportFragmentManager(), "Time picker: ");
             timeOfEvent.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             timeOfEvent.setVisibility(View.GONE);
         }
 
     }
 
-    public void processTimePickerResult (int hourofDay, int minute) {
-        String hour_string = Integer.toString(hourofDay);
+    public void processTimePickerResult (int hourOfDay, int minute) {
+        String hour_string = Integer.toString(hourOfDay);
         String minute_string = Integer.toString(minute);
-        String timeMessage = (hour_string + ":"+minute_string);
+        String timeMessage = (hour_string + " : " + minute_string);
         timeOfEvent.setText(timeMessage);
     }
 

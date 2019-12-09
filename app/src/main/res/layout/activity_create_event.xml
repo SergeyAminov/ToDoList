@@ -43,11 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:hint="choose your date"
+        android:hint="choosen date"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description_id" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/checkDate"
+        app:layout_constraintStart_toEndOf="@+id/checkDate" />
 
     <CheckBox
         android:id="@+id/checkSetTime"
@@ -59,7 +58,7 @@
         android:onClick="pickTime"
         android:text="set time"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
+        app:layout_constraintTop_toBottomOf="@+id/checkDate" />
 
     <TextView
         android:id="@+id/textViewTime"
@@ -67,11 +66,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:hint="tap here to choose time"
+        android:hint="choosen time"
         android:textSize="18sp"
         android:visibility="visible"
         app:layout_constraintBaseline_toBaselineOf="@+id/checkSetTime"
         app:layout_constraintStart_toEndOf="@+id/checkSetTime" />
+
+    <CheckBox
+        android:id="@+id/checkDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="pickDate"
+        android:text="set date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_id" />
 
     <CheckBox
         android:id="@+id/checkMap"
