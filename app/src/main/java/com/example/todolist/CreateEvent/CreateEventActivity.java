@@ -79,12 +79,15 @@ public class CreateEventActivity extends AppCompatActivity{
         String date = dateOfEvent.getText().toString();
         String time = timeOfEvent.getText().toString();
         String desc = description.getText().toString();
-        //String place =
+        String tit = title.getText().toString();
+        String place = location_event.getText().toString();
 
         ContentValues values = new ContentValues();
         values.put(DataBaseContract.TasksTable.DATE_FIELD, date);
         values.put(DataBaseContract.TasksTable.TIME_FIELD, time);
         values.put(DataBaseContract.TasksTable.DESC_FIELD, desc);
+        values.put(DataBaseContract.TasksTable.TITLE_FIELD, tit);
+        values.put(DataBaseContract.TasksTable.PLACE_FIELD, place);
 
         long rowId = writeDB.insert(DataBaseContract.TasksTable.TASKS_TABLE_NAME, null, values);
 
