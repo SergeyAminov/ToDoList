@@ -45,6 +45,7 @@
         android:layout_marginLeft="16dp"
         android:hint="choosen date"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/checkDate"
         app:layout_constraintStart_toEndOf="@+id/checkDate" />
 
@@ -68,7 +69,7 @@
         android:layout_marginLeft="16dp"
         android:hint="choosen time"
         android:textSize="18sp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/checkSetTime"
         app:layout_constraintStart_toEndOf="@+id/checkSetTime" />
 

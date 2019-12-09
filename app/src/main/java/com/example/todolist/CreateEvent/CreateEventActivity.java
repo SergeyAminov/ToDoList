@@ -8,11 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-
-import com.example.todolist.CalendarActivity;
+import com.example.todolist.*;
 import com.example.todolist.DataBase.DBHelper;
 import com.example.todolist.DataBase.DataBaseContract;
-import com.example.todolist.R;
 
 public class CreateEventActivity extends AppCompatActivity{
 
@@ -42,13 +40,14 @@ public class CreateEventActivity extends AppCompatActivity{
 
         //create SQLite db
         admin = new DBHelper(this);
-        readDB=admin.getReadableDatabase();
-        writeDB=admin.getWritableDatabase();
-
+        readDB = admin.getReadableDatabase();
+        writeDB = admin.getWritableDatabase();
 
         Intent i = getIntent();
         final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
         dateOfEvent.setText(messageDate);
+        date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE,false));
+
     }
 
     public void pickDate(View view) {

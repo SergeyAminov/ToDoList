@@ -2,13 +2,10 @@ package com.example.todolist;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.example.todolist.CreateEvent.CreateEventActivity;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +16,8 @@ public class CalendarActivity extends AppCompatActivity {
 
     private CalendarView calendarView;
     private String date_ev;
-    public static final String KEY_DATE_EVENT="date";
+    public static final String KEY_DATE_EVENT = "date";
+    public static final String IS_CHECKBOX_ACTIVE = "is checked";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +103,7 @@ public class CalendarActivity extends AppCompatActivity {
         String messageDate = date_ev;
         Intent i = new Intent(this, CreateEventActivity.class);
         i.putExtra(KEY_DATE_EVENT,messageDate);
+        i.putExtra(IS_CHECKBOX_ACTIVE, true);
         startActivity(i);
     }
 
