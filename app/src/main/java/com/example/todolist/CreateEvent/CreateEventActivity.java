@@ -1,11 +1,13 @@
 package com.example.todolist.CreateEvent;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.example.todolist.*;
@@ -30,6 +32,11 @@ public class CreateEventActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
+        //back button
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         dateOfEvent =findViewById(R.id.textViewDate);
         timeOfEvent = findViewById(R.id.textViewTime);
         time_event = findViewById(R.id.checkSetTime);
@@ -48,6 +55,18 @@ public class CreateEventActivity extends AppCompatActivity{
         dateOfEvent.setText(messageDate);
         date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE,false));
 
+    }
+
+    //method for back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void pickDate(View view) {
