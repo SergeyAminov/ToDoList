@@ -2,12 +2,9 @@ package com.example.todolist;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.example.todolist.CreateEvent.CreateEventActivity;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,17 +17,6 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        /*
-        FloatingActionButton fab = findViewById(R.id.createNewEvent);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-         */
 
     }
 
@@ -47,7 +33,6 @@ public class MapActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.MenuID) {
             startActivity(new Intent(this, MainActivity.class));

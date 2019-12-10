@@ -2,11 +2,9 @@ package com.example.todolist;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,7 +18,6 @@ import com.google.android.gms.tasks.Task;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap map;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     public static final int LOCATION = 1;
@@ -32,22 +29,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         lastLocation();
-    }
-    private void lastLocation()
-    {
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null)
-                {
-                    currentLocation = location;
-                    SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
-                            .findFragmentById(R.id.map);
-                    supportMapFragment.getMapAsync(MapsActivity.this);
-                }
-            }
-        });
     }
 
     @Override
@@ -65,16 +46,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    private void lastLocation() {
+        Task<Location> task = fusedLocationProviderClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    currentLocation = location;
+                    SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.map);
+                    supportMapFragment.getMapAsync(MapsActivity.this);
+                }
+            }
+        });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case LOCATION:
-                if (grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED)
-                {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     lastLocation();
-                }
                 break;
         }
     }
+
 }

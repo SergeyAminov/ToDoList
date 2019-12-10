@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.MapsID) {
-            startActivity(new Intent(this, MapsActivity.class));
+            startActivity(new Intent(this, MapActivity.class));
         }
         if (id == R.id.CalendarID) {
             startActivity(new Intent(this, CalendarActivity.class));
