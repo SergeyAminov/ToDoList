@@ -89,7 +89,7 @@ public class CalendarActivity extends AppCompatActivity {
         if (id == R.id.MenuID) {
             startActivity(new Intent(this, MainActivity.class));
         }
-        if (id == R.id.MapID) {
+        if (id == R.id.MapsID) {
             startActivity(new Intent(this, MapActivity.class));
         }
         if (id == R.id.SettingsID) {

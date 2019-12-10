@@ -82,7 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (id == R.id.CalendarID) {
             startActivity(new Intent(this, CalendarActivity.class));
         }
-        if (id == R.id.MapID) {
+        if (id == R.id.MapsID) {
             startActivity(new Intent(this, MapActivity.class));
         }
 

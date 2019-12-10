@@ -13,7 +13,7 @@
         android:title="@string/Calendar"
         app:showAsAction="never" />
     <item
-        android:id="@+id/MapID"
+        android:id="@+id/MapsID"
         android:orderInCategory="30"
         android:title="@string/Map"
         app:showAsAction="never" />
