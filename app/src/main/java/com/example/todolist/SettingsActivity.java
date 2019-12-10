@@ -3,15 +3,11 @@ package com.example.todolist;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -82,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (id == R.id.CalendarID) {
             startActivity(new Intent(this, CalendarActivity.class));
         }
-        if (id == R.id.MapID) {
+        if (id == R.id.MapsID) {
             startActivity(new Intent(this, MapActivity.class));
         }
 

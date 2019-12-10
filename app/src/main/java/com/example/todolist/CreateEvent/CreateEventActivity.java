@@ -54,7 +54,9 @@ public class CreateEventActivity extends AppCompatActivity{
         final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
         dateOfEvent.setText(messageDate);
         date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE,false));
-
+        if (date_event.isChecked())
+            dateOfEvent.setVisibility(View.VISIBLE);
+        
     }
 
     //method for back button
