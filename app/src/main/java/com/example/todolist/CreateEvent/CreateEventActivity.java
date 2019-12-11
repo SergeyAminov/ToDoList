@@ -20,6 +20,7 @@ public class CreateEventActivity extends AppCompatActivity{
     private EditText description;
     private TextView dateOfEvent;
     private TextView timeOfEvent;
+    private TextView locationOfEvent;
     private CheckBox date_event;
     private CheckBox time_event;
     private CheckBox location_event;
@@ -39,6 +40,7 @@ public class CreateEventActivity extends AppCompatActivity{
 
         dateOfEvent =findViewById(R.id.textViewDate);
         timeOfEvent = findViewById(R.id.textViewTime);
+        locationOfEvent = findViewById(R.id.textViewLocation);
         time_event = findViewById(R.id.checkSetTime);
         date_event = findViewById(R.id.checkDate);
         description = findViewById(R.id.description_id);
@@ -51,12 +53,13 @@ public class CreateEventActivity extends AppCompatActivity{
         writeDB = admin.getWritableDatabase();
 
         Intent i = getIntent();
+
         final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
         dateOfEvent.setText(messageDate);
         date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE,false));
         if (date_event.isChecked())
             dateOfEvent.setVisibility(View.VISIBLE);
-        
+
     }
 
     //method for back button

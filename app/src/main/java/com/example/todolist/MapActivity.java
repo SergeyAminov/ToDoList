@@ -13,6 +13,7 @@ public class MapActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -85,8 +86,8 @@ public class MapActivity extends AppCompatActivity {
 
     public void onClick(View view){
 
-        Intent intent = new Intent(MapActivity.this, CreateEventActivity.class);
-        startActivity(intent);
+        Intent i = new Intent(this, CreateEventActivity.class);
+        startActivity(i);
 
     }
 

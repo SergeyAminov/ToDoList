@@ -32,6 +32,7 @@ public class CalendarActivity extends AppCompatActivity {
                 date_ev = dayOfMonth + "/" + (month+1) + "/" + (year);
             }
         });
+
     }
 
     @Override
@@ -99,9 +100,8 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     public void createEvent(View view) {
-        String messageDate = date_ev;
         Intent i = new Intent(this, CreateEventActivity.class);
-        i.putExtra(KEY_DATE_EVENT,messageDate);
+        i.putExtra(KEY_DATE_EVENT, date_ev);
         i.putExtra(IS_CHECKBOX_ACTIVE, true);
         startActivity(i);
     }

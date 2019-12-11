@@ -37,6 +37,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_id" />
 
+    <CheckBox
+        android:id="@+id/checkDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="pickDate"
+        android:text="set date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_id" />
+
     <TextView
         android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
@@ -74,18 +86,6 @@
         app:layout_constraintStart_toEndOf="@+id/checkSetTime" />
 
     <CheckBox
-        android:id="@+id/checkDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:onClick="pickDate"
-        android:text="set date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description_id" />
-
-    <CheckBox
         android:id="@+id/checkMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -108,5 +108,17 @@
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:hint="choosen location"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/checkMap"
+        app:layout_constraintStart_toEndOf="@+id/checkMap" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

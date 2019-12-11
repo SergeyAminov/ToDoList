@@ -18,7 +18,7 @@ import com.google.android.gms.tasks.Task;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    Location currentLocation;
+    public static Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     public static final int LOCATION = 1;
 
@@ -39,10 +39,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,5 ));
         googleMap.addMarker(markerOptions);
-        //      map = googleMap;
-//      LatLng sydney = new LatLng(0,0);
-//      map.addMarker(new MarkerOptions().position(sydney).title("Marker at Sydney"));
-//      map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //map = googleMap;
+        //LatLng sydney = new LatLng(0,0);
+        //map.addMarker(new MarkerOptions().position(sydney).title("Marker at Sydney"));
+        //map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
     }
 
