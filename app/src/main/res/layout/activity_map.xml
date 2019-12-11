@@ -51,7 +51,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Find me" />
+            android:onClick="saveLoc"
+            android:text="Save Location" />
 
     </RelativeLayout>
 
