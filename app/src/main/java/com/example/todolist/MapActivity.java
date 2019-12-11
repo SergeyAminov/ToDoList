@@ -2,6 +2,8 @@ package com.example.todolist;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import com.example.todolist.CreateEvent.CreateEventActivity;
@@ -31,6 +33,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,9 +43,9 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
-
 
     private GoogleMap map;
     private PlacesClient placesClient;
@@ -53,8 +57,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private View mapView;
     private Button btnFind;
 
-
-
+    public static final String KEY_LOCATION_EVENT = "date";
+    public static final String IS_CHECKBOX_ACTIVE = "is checked";
+    private String location_ev;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +69,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        ///
         searchView = findViewById(R.id.search_bar);
         btnFind = findViewById(R.id.buttonFind);
+
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_google);
         supportMapFragment.getMapAsync(MapActivity.this);
@@ -141,15 +145,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         //Log.d(LOG_TAG, "onDestroy");
     }
 
+    //converting coordinates into address
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.w("location address", strReturnedAddress.toString());
+            } else {
+                Log.w("location address", "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.w("location address", "Cannot get Address!");
+        }
+        return strAdd;
+    }
+
     public void onClick(View view){
 
+        location_ev = getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude());
+
         Intent i = new Intent(this, CreateEventActivity.class);
+        i.putExtra(KEY_LOCATION_EVENT, location_ev);
+        i.putExtra(IS_CHECKBOX_ACTIVE, true);
         startActivity(i);
 
     }
-
-
-    /////
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -202,7 +232,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode ==5)
+        if (requestCode == 5)
         {
             getDeviceLocation();
         }

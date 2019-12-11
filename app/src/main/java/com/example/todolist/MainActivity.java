@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,13 +40,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        da=new DataAccess(this);//получение данных из sql таблицы в list array
-        list=da.getTasks();
-
-//        проверка вывода всех данных в лог
-//        list.forEach((tasks)->{
-//            Log.d("rrr",tasks.getTitle() +" " + tasks.getDescription());
-//        });
+        //получение данных из sql таблицы в list array
+        da = new DataAccess(this);
+        list = da.getTasks();
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mAdapter = new TasksListAdapter(this, list);

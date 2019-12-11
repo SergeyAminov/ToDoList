@@ -53,12 +53,18 @@ public class CreateEventActivity extends AppCompatActivity{
         writeDB = admin.getWritableDatabase();
 
         Intent i = getIntent();
-
         final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
         dateOfEvent.setText(messageDate);
         date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE,false));
         if (date_event.isChecked())
             dateOfEvent.setVisibility(View.VISIBLE);
+
+        Intent j = getIntent();
+        final String messageLocation = j.getStringExtra(MapActivity.KEY_LOCATION_EVENT);
+        locationOfEvent.setText(messageLocation);
+        location_event.setChecked(j.getBooleanExtra(MapActivity.IS_CHECKBOX_ACTIVE,false));
+        if (location_event.isChecked())
+            locationOfEvent.setVisibility(View.VISIBLE);
 
     }
 
@@ -75,6 +81,7 @@ public class CreateEventActivity extends AppCompatActivity{
     }
 
     public void pickDate(View view) {
+
         if (date_event.isChecked()) {
             DialogFragment newFragment = new DatePickerFragment();
             newFragment.show(getSupportFragmentManager(), "Date picker: ");
@@ -123,7 +130,7 @@ public class CreateEventActivity extends AppCompatActivity{
         String time = timeOfEvent.getText().toString();
         String desc = description.getText().toString();
         String tit = title.getText().toString();
-        String place = location_event.getText().toString();
+        String place = locationOfEvent.getText().toString();
 
         ContentValues values = new ContentValues();
         values.put(DataBaseContract.TasksTable.DATE_FIELD, date);
@@ -136,7 +143,7 @@ public class CreateEventActivity extends AppCompatActivity{
 
         Toast.makeText(CreateEventActivity.this, rowId+ " ", Toast.LENGTH_LONG).show();
 
-        Intent i = new Intent(this, CalendarActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
 
     }

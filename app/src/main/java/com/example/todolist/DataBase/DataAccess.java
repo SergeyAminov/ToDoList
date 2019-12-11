@@ -8,7 +8,8 @@ import com.example.todolist.Tasks.Tasks;
 
 import java.util.ArrayList;
 
-public class DataAccess {//класс для получения данных из таблицы
+//класс для получения данных из таблицы
+public class DataAccess {
     private DBHelper admin;
     private SQLiteDatabase readDB, writeDB;
     private Context context;
@@ -26,27 +27,22 @@ public class DataAccess {//класс для получения данных и�
 
         String[] projection = {DataBaseContract.TasksTable.ID_FIELD, DataBaseContract.TasksTable.TITLE_FIELD,
                 DataBaseContract.TasksTable.DESC_FIELD};
-// How you want the results sorted in the resulting Curso
+        // How you want the results sorted in the resulting Curso
         //String sortOrder =MyDatabaseContract .TableWorkers.COLUMN_NAME_LAST_NAME + " DESC";
         Cursor c = readDB.query(
                 DataBaseContract.TasksTable.TASKS_TABLE_NAME,  // The table to query
-                projection,                                                           // The columns to return
-                null,                                                                     // The columns for the WHERE clause, all if null
-                null,                                                                     // The values for the WHERE clause
-                null,                                                                      // don't group the rows
-                null,                                                                      // don't filter by row groups
-                null);                                                         // The sort order
-        //  String s ="";
+                projection,                                    // The columns to return
+                null,                                  // The columns for the WHERE clause, all if null
+                null,                                // The values for the WHERE clause
+                null,                                   // don't group the rows
+                null,                                    // don't filter by row groups
+                null);                                  // The sort order
         c.moveToFirst();
         for (int i = 0; i < c.getCount(); i++) {
-            list.add(
-                    new Tasks(c.getString(0), c.getString(1), c.getString(2))
-            );
+            list.add(new Tasks(c.getString(0), c.getString(1), c.getString(2)));
             c.moveToNext();
-            //  Log.i("sss", s);  c.moveToNext();     }   }
         }
             return list;
-
     }
 
     public Tasks getTask(String id) {// квери таска через Id
@@ -63,16 +59,17 @@ public class DataAccess {//класс для получения данных и�
                 DataBaseContract.TasksTable.PLACE_FIELD};
        Cursor c = readDB.query(
                 DataBaseContract.TasksTable.TASKS_TABLE_NAME,  // The table to query
-                projection,                                                           // The columns to return
-                selection,                                                                     // The columns for the WHERE clause, all if null
-                selectionArgs,                                                                     // The values for the WHERE clause
-                null,                                                                      // don't group the rows
-                null,                                                                      // don't filter by row groups
-                null);                                                         // The sort order
+                projection,                                    // The columns to return
+                selection,                                     // The columns for the WHERE clause, all if null
+                selectionArgs,                                 // The values for the WHERE clause
+                null,                                  // don't group the rows
+                null,                                   // don't filter by row groups
+                null);                                 // The sort order
         //  String s ="";
         c.moveToFirst();
 
         return new Tasks(c.getString(0), c.getString(1), c.getString(2),c.getString(3), c.getString(4), c.getString(5));
 
     }
+
 }
