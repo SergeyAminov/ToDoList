@@ -2,6 +2,8 @@ package com.example.todolist;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import com.example.todolist.CreateEvent.CreateEventActivity;
@@ -19,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,20 +41,20 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
+import java.io.IOException;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 
     private GoogleMap map;
-    private PlacesClient placesClient;
-    private List<AutocompletePrediction> predictionList;
     private Location currentLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private SearchView searchView;
     private View mapView;
-    private Button btnFind;
+
+
 
 
 
@@ -64,10 +67,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        ///
         searchView = findViewById(R.id.search_bar);
-        btnFind = findViewById(R.id.buttonFind);
+
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_google);
         supportMapFragment.getMapAsync(MapActivity.this);
@@ -155,9 +156,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
 
         map = googleMap;
+       requestLocation();
+       findLoc(mapView);
+    }
+
+    public void requestLocation()
+
+    {
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
-
         if (mapView != null && mapView.findViewById(Integer.parseInt("1"))!=null) {
             View locButton = ((View)mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locButton.getLayoutParams();
@@ -196,7 +203,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         });
-
     }
 
     @Override
@@ -247,4 +253,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
+    public void findLoc(View view)
+    {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String loc = searchView.getQuery().toString();
+                List<Address> addressList = null;
+
+                if (loc != null || !loc.equals(""))
+                {
+                    Geocoder geocoder = new Geocoder(MapActivity.this);
+                    try {
+                        addressList = geocoder.getFromLocationName(loc,1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Address address = addressList.get(0);
+                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                    map.addMarker(new MarkerOptions().position(latLng).title(loc));
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+    }
+
+    public void saveLoc(View view)
+    {
+
+    }
 }
