@@ -79,7 +79,7 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(new Intent(this, CalendarActivity.class));
         }
         if (id == R.id.MapsID) {
-            startActivity(new Intent(this, MapsActivity.class));
+            startActivity(new Intent(this, MapActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
