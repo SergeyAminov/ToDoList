@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -24,8 +25,16 @@ public class CreateEventActivity extends AppCompatActivity{
     private CheckBox date_event;
     private CheckBox time_event;
     private CheckBox location_event;
+
     private DBHelper admin;
     private SQLiteDatabase readDB, writeDB;
+
+    private SharedPreferences shared;
+    private final String SAVED_TITLE = "title";
+    private final String SAVED_DESCRIPTION = "description";
+    private final String SAVED_DATE = "date";
+    private final String SAVED_TIME = "time";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,9 @@ public class CreateEventActivity extends AppCompatActivity{
            if (location_event.isChecked())
                locationOfEvent.setVisibility(View.VISIBLE);
        }
+
+       if (shared != null)
+            loadPreferences();
 
     }
 
@@ -125,6 +137,8 @@ public class CreateEventActivity extends AppCompatActivity{
 
     public void pickLocation(View view) {
 
+        savePreferences();
+
         if (location_event.isChecked()) {
             Intent i = new Intent(this, MapCompactActivity.class);
             startActivity(i);
@@ -160,6 +174,33 @@ public class CreateEventActivity extends AppCompatActivity{
 
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
+
+    }
+
+    public void savePreferences(){
+
+        shared = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.putString(SAVED_TITLE, title.getText().toString());
+        editor.putString(SAVED_DESCRIPTION, description.getText().toString());
+        editor.putString(SAVED_DATE, dateOfEvent.getText().toString());
+        editor.putString(SAVED_TIME, timeOfEvent.getText().toString());
+        editor.commit();
+
+    }
+
+    public void loadPreferences(){
+
+        shared = getPreferences(MODE_PRIVATE);
+        String savedTitle = shared.getString(SAVED_TITLE, "");
+        String savedDescription = shared.getString(SAVED_DESCRIPTION, "");
+        String savedDate = shared.getString(SAVED_DATE, "");
+        String savedTime = shared.getString(SAVED_TIME, "");
+
+        title.setText(savedTitle);
+        description.setText(savedDescription);
+        dateOfEvent.setText(savedDate);
+        timeOfEvent.setText(savedTime);
 
     }
 
