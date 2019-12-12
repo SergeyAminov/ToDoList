@@ -2,7 +2,12 @@ package com.example.todolist.CreateEvent;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
+
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +39,8 @@ public class CreateEventActivity extends AppCompatActivity{
     private final String SAVED_DESCRIPTION = "description";
     private final String SAVED_DATE = "date";
     private final String SAVED_TIME = "time";
+    private static final int NOTIFICATION_ID = 1;
+    public static final String CHANNEL_ID ="01";
 
 
     @Override
@@ -201,7 +208,24 @@ public class CreateEventActivity extends AppCompatActivity{
         description.setText(savedDescription);
         dateOfEvent.setText(savedDate);
         timeOfEvent.setText(savedTime);
+    }
+    public void createNotif(View view)
+    {
 
+        if (view.isEnabled())
+
+        {
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_stat_event)
+                    .setContentTitle(title.getText().toString())
+                    .setContentText(description.getText().toString())
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setAutoCancel(true)
+                    .setWhen(System.currentTimeMillis());
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+            notificationManagerCompat.notify(001,notification.build());
+        }
+        
     }
 
 }

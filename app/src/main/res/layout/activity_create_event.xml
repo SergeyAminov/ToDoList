@@ -120,5 +120,16 @@
         android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/checkMap"
         app:layout_constraintStart_toEndOf="@+id/checkMap" />
+    <Switch
+        android:id="@+id/switchSetNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="createNotif"
+        android:text="Set Notification ?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkMap" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
