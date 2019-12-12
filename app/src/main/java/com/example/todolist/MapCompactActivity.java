@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapCompactActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap map;
     private Location currentLocation;
@@ -60,7 +60,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Button btnFind;
     private Address lastAddress;
 
-
     public static final String KEY_LOCATION_EVENT = "date";
     public static final String IS_CHECKBOX_ACTIVE = "is checked";
     private String location_ev;
@@ -69,84 +68,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_map_compact);
 
         searchView = findViewById(R.id.search_bar);
         btnFind = findViewById(R.id.buttonFind);
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_google);
-        supportMapFragment.getMapAsync(MapActivity.this);
+        supportMapFragment.getMapAsync(MapCompactActivity.this);
         mapView = supportMapFragment.getView();
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapActivity.this);
-        Places.initialize(MapActivity.this,"AIzaSyCuPb2sC7C575zCfzHoJLW9DJ3rk04jGYU");
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapCompactActivity.this);
+        Places.initialize(MapCompactActivity.this,"AIzaSyCuPb2sC7C575zCfzHoJLW9DJ3rk04jGYU");
 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_map, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.MenuID) {
-            startActivity(new Intent(this, MainActivity.class));
-        }
-        if (id == R.id.CalendarID) {
-            startActivity(new Intent(this, CalendarActivity.class));
-        }
-        if (id == R.id.SettingsID) {
-            startActivity(new Intent(this, SettingsActivity.class));
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        //Log.d(LOG_TAG, "onStart");
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        //Log.d(LOG_TAG, "onPause");
-    }
-
-    @Override
-    public void onRestart(){
-        super.onRestart();
-        //Log.d(LOG_TAG, "onRestart");
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        //Log.d(LOG_TAG, "onResume");
-    }
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        //Log.d(LOG_TAG, "onStop");
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        //Log.d(LOG_TAG, "onDestroy");
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        requestLocation();
+        findLoc(mapView);
     }
 
     //converting coordinates into address
@@ -189,13 +130,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-       requestLocation();
-       findLoc(mapView);
-    }
-
     public void requestLocation(){
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
@@ -213,24 +147,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-        SettingsClient settingsClient = LocationServices.getSettingsClient(MapActivity.this);
+        SettingsClient settingsClient = LocationServices.getSettingsClient(MapCompactActivity.this);
         Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
 
-        task.addOnSuccessListener(MapActivity.this, new OnSuccessListener<LocationSettingsResponse>() {
+        task.addOnSuccessListener(MapCompactActivity.this, new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 getDeviceLocation();
             }
         });
 
-        task.addOnFailureListener(MapActivity.this, new OnFailureListener() {
+        task.addOnFailureListener(MapCompactActivity.this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 if (e instanceof ResolvableApiException)
                 {
                     ResolvableApiException resolvable = (ResolvableApiException) e;
                     try {
-                        resolvable.startResolutionForResult(MapActivity.this,5);
+                        resolvable.startResolutionForResult(MapCompactActivity.this,5);
                     } catch (IntentSender.SendIntentException ex) {
                         ex.printStackTrace();
                     }
@@ -296,7 +230,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 List<Address> addressList = new ArrayList<>();
 
                 if (!loc.equals("")) {
-                    Geocoder geocoder = new Geocoder(MapActivity.this);
+                    Geocoder geocoder = new Geocoder(MapCompactActivity.this);
                     try {
                         addressList=geocoder.getFromLocationName(loc,1);
                     } catch (IOException e) {
@@ -332,7 +266,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             startActivity(i);
         }
         else{
-            Toast.makeText(MapActivity.this, "No location searched", Toast.LENGTH_LONG).show();
+            Toast.makeText(MapCompactActivity.this, "No location searched", Toast.LENGTH_LONG).show();
         }
 
     }

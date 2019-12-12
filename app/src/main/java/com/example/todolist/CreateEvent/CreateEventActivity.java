@@ -53,18 +53,21 @@ public class CreateEventActivity extends AppCompatActivity{
         writeDB = admin.getWritableDatabase();
 
         Intent i = getIntent();
-        final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
-        dateOfEvent.setText(messageDate);
-        date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE,false));
-        if (date_event.isChecked())
-            dateOfEvent.setVisibility(View.VISIBLE);
 
-        Intent j = getIntent();
-        final String messageLocation = j.getStringExtra(MapActivity.KEY_LOCATION_EVENT);
-        locationOfEvent.setText(messageLocation);
-        location_event.setChecked(j.getBooleanExtra(MapActivity.IS_CHECKBOX_ACTIVE,false));
-        if (location_event.isChecked())
-            locationOfEvent.setVisibility(View.VISIBLE);
+       if( i.getBooleanExtra("a",true)) {
+           final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
+           dateOfEvent.setText(messageDate);
+           date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE, false));
+           if (date_event.isChecked())
+               dateOfEvent.setVisibility(View.VISIBLE);
+       }
+       else {
+           final String messageLocation = i.getStringExtra(MapActivity.KEY_LOCATION_EVENT);
+           locationOfEvent.setText(messageLocation);
+           location_event.setChecked(i.getBooleanExtra(MapActivity.IS_CHECKBOX_ACTIVE, false));
+           if (location_event.isChecked())
+               locationOfEvent.setVisibility(View.VISIBLE);
+       }
 
     }
 
@@ -118,6 +121,18 @@ public class CreateEventActivity extends AppCompatActivity{
         String minute_string = Integer.toString(minute);
         String timeMessage = (hour_string + " : " + minute_string);
         timeOfEvent.setText(timeMessage);
+    }
+
+    public void pickLocation(View view) {
+
+        if (location_event.isChecked()) {
+            Intent i = new Intent(this, MapCompactActivity.class);
+            startActivity(i);
+        }
+        else {
+            timeOfEvent.setVisibility(View.GONE);
+        }
+
     }
 
     public void chooseMap(View view) {

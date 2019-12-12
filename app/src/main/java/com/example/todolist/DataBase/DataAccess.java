@@ -72,4 +72,10 @@ public class DataAccess {
 
     }
 
+    public void deleteTask(String id) {
+        String selection = DataBaseContract.TasksTable.ID_FIELD + " LIKE ?";
+        String[] selectionArgs = {id};
+        readDB.delete(DataBaseContract.TasksTable.TASKS_TABLE_NAME, selection, selectionArgs);
+    }
+
 }

@@ -10,12 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todolist.DataBase.DataBaseContract;
 import com.example.todolist.DetailTasks;
 import com.example.todolist.R;
 
 import java.util.ArrayList;
 
 public class TasksListAdapter extends RecyclerView.Adapter<TasksListAdapter.TasksViewHolder>{
+
     private ArrayList<Tasks> tList;
     private Context mContext;
 
@@ -75,5 +77,6 @@ public class TasksListAdapter extends RecyclerView.Adapter<TasksListAdapter.Task
 
         }
     }
+
 
 }

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,10 +66,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder,
-                                 int direction) {
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                String id = list.get(viewHolder.getAdapterPosition()).getId();
                 list.remove(viewHolder.getAdapterPosition());
                 mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                da.deleteTask(id);
+                Toast.makeText(MainActivity.this, "Задача удалена", Toast.LENGTH_LONG).show();
             }
         });
         helper.attachToRecyclerView(mRecyclerView);

@@ -100,7 +100,9 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     public void createEvent(View view) {
+
         Intent i = new Intent(this, CreateEventActivity.class);
+        i.putExtra("a",true);
         i.putExtra(KEY_DATE_EVENT, date_ev);
         i.putExtra(IS_CHECKBOX_ACTIVE, true);
         startActivity(i);
