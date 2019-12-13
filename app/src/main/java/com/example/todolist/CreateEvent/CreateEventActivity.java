@@ -78,8 +78,10 @@ public class CreateEventActivity extends AppCompatActivity{
                locationOfEvent.setVisibility(View.VISIBLE);
        }
 
-       if (shared != null)
-            loadPreferences();
+        //SharedPreferences myPrefs = getSharedPreferences(MapActivity.class.getName(), MODE_PRIVATE);
+
+       //loadPreferences(myPrefs);
+       //savePreferences();
 
     }
 
@@ -137,7 +139,13 @@ public class CreateEventActivity extends AppCompatActivity{
 
     public void pickLocation(View view) {
 
-        savePreferences();
+        /*SharedPreferences.Editor editor = this.shared.edit();
+        editor.putString(SAVED_TITLE, title.getText().toString());
+        editor.putString(SAVED_DESCRIPTION, description.getText().toString());
+        editor.putString(SAVED_DATE, dateOfEvent.getText().toString());
+        editor.putString(SAVED_TIME, timeOfEvent.getText().toString());
+        editor.commit();*/
+
 
         if (location_event.isChecked()) {
             Intent i = new Intent(this, MapCompactActivity.class);
@@ -177,7 +185,7 @@ public class CreateEventActivity extends AppCompatActivity{
 
     }
 
-    public void savePreferences(){
+    /*public void savePreferences(){
 
         shared = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = shared.edit();
@@ -189,13 +197,19 @@ public class CreateEventActivity extends AppCompatActivity{
 
     }
 
-    public void loadPreferences(){
 
-        shared = getPreferences(MODE_PRIVATE);
-        String savedTitle = shared.getString(SAVED_TITLE, "");
-        String savedDescription = shared.getString(SAVED_DESCRIPTION, "");
-        String savedDate = shared.getString(SAVED_DATE, "");
-        String savedTime = shared.getString(SAVED_TIME, "");
+
+    public void loadPreferences(SharedPreferences shared){
+
+        this.shared = shared;
+
+
+
+        this.shared = getPreferences(MODE_PRIVATE);
+        String savedTitle = this.shared.getString(SAVED_TITLE, "");
+        String savedDescription = this.shared.getString(SAVED_DESCRIPTION, "");
+        String savedDate = this.shared.getString(SAVED_DATE, "");
+        String savedTime = this.shared.getString(SAVED_TIME, "");
 
         title.setText(savedTitle);
         description.setText(savedDescription);
@@ -203,5 +217,7 @@ public class CreateEventActivity extends AppCompatActivity{
         timeOfEvent.setText(savedTime);
 
     }
+
+     */
 
 }

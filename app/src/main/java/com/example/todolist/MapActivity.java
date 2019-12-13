@@ -2,6 +2,7 @@ package com.example.todolist;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -84,7 +85,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapActivity.this);
         Places.initialize(MapActivity.this,"AIzaSyCuPb2sC7C575zCfzHoJLW9DJ3rk04jGYU");
 
+
+        //getPreferencesFromCreateEventActivity();
+
     }
+
+    /*private void getPreferencesFromCreateEventActivity() {
+
+        SharedPreferences myPrefs = getSharedPreferences(CreateEventActivity.class.getName(), MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = myPrefs.edit();
+
+        editor.commit();
+
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
