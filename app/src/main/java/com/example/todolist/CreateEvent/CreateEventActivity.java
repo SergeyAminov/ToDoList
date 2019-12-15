@@ -69,7 +69,6 @@ public class CreateEventActivity extends AppCompatActivity{
     private static final int NOTIFICATION_ID = 1;
     public static final String CHANNEL_ID ="01";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -105,6 +104,8 @@ public class CreateEventActivity extends AppCompatActivity{
         shared = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         Intent i = getIntent();
 
+
+
         if( i.getBooleanExtra(CalendarActivity.KEYWORD_CALENDAR,true)) {
             final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
             dateOfEvent.setText(messageDate);
@@ -128,11 +129,14 @@ public class CreateEventActivity extends AppCompatActivity{
         }
 
         if( i.getBooleanExtra(MapCompactActivity.KEYWORD_MAP_COMPACT,true)) {
-            final String messageLocationCompact = i.getStringExtra(MapCompactActivity.KEY_LOCATION_EVENT);
-            locationOfEvent.setText(messageLocationCompact);
-            location_event.setChecked(i.getBooleanExtra(MapCompactActivity.IS_CHECKBOX_ACTIVE, false));
-            if (location_event.isChecked())
+
+            location_event.setChecked(getSharedPreferences(sharedPrefFile,MODE_PRIVATE).getBoolean(CreateEventActivity.sharedIsLoc,false));
+            if (location_event.isChecked()) {
                 locationOfEvent.setVisibility(View.VISIBLE);
+            }
+            String messageLocationCompact = getSharedPreferences(sharedPrefFile, MODE_PRIVATE).getString(sharedLoc, "");
+            //final String messageLocationCompact = i.getStringExtra(MapCompactActivity.KEY_LOCATION_EVENT);
+            locationOfEvent.setText(messageLocationCompact);
         }
 
         setNotification.setOnClickListener(new View.OnClickListener() {
@@ -145,10 +149,10 @@ public class CreateEventActivity extends AppCompatActivity{
                 }else{
                     setAlarm(calendar1);
                 }
-
-
             }
         });
+
+        loadPreferences(this.shared);
 
         savePreferences(this.shared);
 
@@ -172,7 +176,9 @@ public class CreateEventActivity extends AppCompatActivity{
         preferencesEditor.putBoolean(IS_TIME_VISIBLE, time_event.isChecked());
         preferencesEditor.putBoolean(IS_DATE_VISIBLE, date_event.isChecked());
 
-        preferencesEditor.apply();
+        preferencesEditor.commit();
+
+        //preferencesEditor.apply();
 
     }
 
@@ -219,7 +225,7 @@ public class CreateEventActivity extends AppCompatActivity{
 
     @Override
     public void onPause(){
-        savePreferences(this.shared);
+
         setNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,11 +240,15 @@ public class CreateEventActivity extends AppCompatActivity{
             }
 
         });
+
+        savePreferences(this.shared);
+
         super.onPause();
     }
 
     @Override
     public void onRestart(){
+
         setNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,6 +269,7 @@ public class CreateEventActivity extends AppCompatActivity{
 
     @Override
     public void onResume(){
+
         setNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,6 +320,9 @@ public class CreateEventActivity extends AppCompatActivity{
             }
 
         });
+
+        savePreferences(this.shared);
+
         super.onStop();
         //Log.d(LOG_TAG, "onStop");
     }
@@ -441,20 +455,21 @@ public class CreateEventActivity extends AppCompatActivity{
     }
 
     Calendar calendar1 = Calendar.getInstance();
+
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
         @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             calendar1.set(Calendar.YEAR, year);
             calendar1.set(Calendar.MONTH, monthOfYear);
             calendar1.set(DAY_OF_MONTH, dayOfMonth);
             String formatYEAR = "MM/dd/yy";
             SimpleDateFormat sdf = new SimpleDateFormat(formatYEAR, Locale.US);
             textViewDateReminder.setText("Date Reminder: " + sdf.format(calendar1.getTime()));
-
         }
+
     };
+
     TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -498,9 +513,7 @@ public class CreateEventActivity extends AppCompatActivity{
         }
     }
 
-
-    private void setAlarm (Calendar reminderCal)
-    {
+    private void setAlarm (Calendar reminderCal) {
         Intent intent = new Intent(getBaseContext(), AlarmNotif.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), NOTIFICATION_ID, intent,PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
