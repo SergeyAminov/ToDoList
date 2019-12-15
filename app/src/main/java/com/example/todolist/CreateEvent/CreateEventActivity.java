@@ -6,9 +6,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,16 +24,28 @@ import com.example.todolist.*;
 import com.example.todolist.DataBase.DBHelper;
 import com.example.todolist.DataBase.DataBaseContract;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import static java.util.Calendar.DAY_OF_MONTH;
+
 public class CreateEventActivity extends AppCompatActivity{
 
-    private EditText title;
-    private EditText description;
+    public static EditText title;
+    public static EditText description;
     private TextView dateOfEvent;
     private TextView timeOfEvent;
     private TextView locationOfEvent;
     private CheckBox date_event;
     private CheckBox time_event;
     private CheckBox location_event;
+    Switch createReminder;
+    Button setDate;
+    Button setTime;
+    TextView textViewDateReminder;
+    TextView textViewTimeReminder;
+    Button setNotification;
 
     private DBHelper admin;
     private SQLiteDatabase readDB, writeDB;
@@ -73,6 +89,12 @@ public class CreateEventActivity extends AppCompatActivity{
         time_event = findViewById(R.id.checkSetTime);
         date_event = findViewById(R.id.checkDate);
         location_event = findViewById(R.id.checkMap);
+        setDate = findViewById(R.id.btnSetDate);
+        setTime = findViewById(R.id.btnSetTime);
+        createReminder = findViewById(R.id.switchSetNotification);
+        textViewDateReminder = findViewById(R.id.dateReminder);
+        textViewTimeReminder = findViewById(R.id.timeReminder);
+        setNotification = findViewById(R.id.btnSetNotification);
 
         //create SQLite db
         admin = new DBHelper(this);
@@ -94,8 +116,6 @@ public class CreateEventActivity extends AppCompatActivity{
 
         if( i.getBooleanExtra(MapActivity.KEYWORD_MAP,true)) {
 
-
-
             location_event.setChecked(getSharedPreferences(sharedPrefFile,MODE_PRIVATE).getBoolean(CreateEventActivity.sharedIsLoc,false));
             if (location_event.isChecked())
                 locationOfEvent.setVisibility(View.VISIBLE);
@@ -114,6 +134,23 @@ public class CreateEventActivity extends AppCompatActivity{
             if (location_event.isChecked())
                 locationOfEvent.setVisibility(View.VISIBLE);
         }
+
+        setNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                if(calendar1.compareTo(currentTime) <= 0){
+                    //The set Date/Time already passed
+                    Toast.makeText(getApplicationContext(), "Choose your Date/Time", Toast.LENGTH_LONG).show();
+                }else{
+                    setAlarm(calendar1);
+                }
+
+
+            }
+        });
+
+        savePreferences(this.shared);
 
     }
 
@@ -175,6 +212,7 @@ public class CreateEventActivity extends AppCompatActivity{
 
     @Override
     public void onStart(){
+
         super.onStart();
         //Log.d(LOG_TAG, "onStart");
     }
@@ -182,17 +220,59 @@ public class CreateEventActivity extends AppCompatActivity{
     @Override
     public void onPause(){
         savePreferences(this.shared);
+        setNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                if(calendar1.compareTo(currentTime) <= 0){
+
+                    Toast.makeText(getApplicationContext(), "Choose your Date/Time", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    setAlarm(calendar1);
+                }
+            }
+
+        });
         super.onPause();
     }
 
     @Override
     public void onRestart(){
+        setNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                if(calendar1.compareTo(currentTime) <= 0){
+
+                    Toast.makeText(getApplicationContext(), "Choose your Date/Time", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    setAlarm(calendar1);
+                }
+            }
+
+        });
         super.onRestart();
         //Log.d(LOG_TAG, "onRestart");
     }
 
     @Override
     public void onResume(){
+        setNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                if(calendar1.compareTo(currentTime) <= 0){
+
+                    Toast.makeText(getApplicationContext(), "Choose your Date/Time", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    setAlarm(calendar1);
+                }
+            }
+
+        });
 
         loadPreferences(this.shared);
 
@@ -215,12 +295,40 @@ public class CreateEventActivity extends AppCompatActivity{
 
     @Override
     public void onStop(){
+        setNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                if(calendar1.compareTo(currentTime) <= 0){
+
+                    Toast.makeText(getApplicationContext(), "Choose your Date/Time", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    setAlarm(calendar1);
+                }
+            }
+
+        });
         super.onStop();
         //Log.d(LOG_TAG, "onStop");
     }
 
     @Override
     public void onDestroy(){
+        setNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                if(calendar1.compareTo(currentTime) <= 0){
+
+                    Toast.makeText(getApplicationContext(), "Choose your Date/Time", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    setAlarm(calendar1);
+                }
+            }
+
+        });
         //deletePreferences(this.shared);
         super.onDestroy();
         //Log.d(LOG_TAG, "onDestroy");
@@ -332,20 +440,72 @@ public class CreateEventActivity extends AppCompatActivity{
 
     }
 
-    public void createNotif(View view) {
+    Calendar calendar1 = Calendar.getInstance();
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
-        if (view.isEnabled()) {
-            NotificationCompat.Builder notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_stat_event)
-                    .setContentTitle(title.getText().toString())
-                    .setContentText(description.getText().toString())
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true)
-                    .setWhen(System.currentTimeMillis());
-            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-            notificationManagerCompat.notify(001,notification.build());
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            calendar1.set(Calendar.YEAR, year);
+            calendar1.set(Calendar.MONTH, monthOfYear);
+            calendar1.set(DAY_OF_MONTH, dayOfMonth);
+            String formatYEAR = "MM/dd/yy";
+            SimpleDateFormat sdf = new SimpleDateFormat(formatYEAR, Locale.US);
+            textViewDateReminder.setText("Date Reminder: " + sdf.format(calendar1.getTime()));
+
         }
-        
+    };
+    TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            calendar1.set(Calendar.HOUR, hourOfDay);
+            calendar1.set(Calendar.MINUTE, minute);
+            textViewTimeReminder.setText("Time reminder: "+ hourOfDay+":"+minute);
+        }
+    };
+
+
+    public void createNotif(View view) {
+        if (createReminder.isChecked()) {
+            setDate.setVisibility(View.VISIBLE);
+            setDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new DatePickerDialog(CreateEventActivity.this, date, calendar1
+                            .get(Calendar.YEAR), calendar1.get(Calendar.MONTH),
+                            calendar1.get(Calendar.DAY_OF_MONTH)).show();
+                }
+            });
+            textViewDateReminder.setVisibility(View.VISIBLE);
+            setTime.setVisibility(View.VISIBLE);
+            setNotification.setVisibility(View.VISIBLE);
+
+            setTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new TimePickerDialog(CreateEventActivity.this, time,calendar1.get(Calendar.HOUR)
+                            ,calendar1.get(Calendar.MINUTE),true).show();
+                }
+            });
+            textViewTimeReminder.setVisibility(View.VISIBLE);
+
+        } else {
+            setDate.setVisibility(View.GONE);
+            setTime.setVisibility(View.GONE);
+            textViewDateReminder.setVisibility(View.GONE);
+            textViewDateReminder.setVisibility(View.GONE);
+            setNotification.setVisibility(View.GONE);
+        }
     }
+
+
+    private void setAlarm (Calendar reminderCal)
+    {
+        Intent intent = new Intent(getBaseContext(), AlarmNotif.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), NOTIFICATION_ID, intent,PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, reminderCal.getTimeInMillis(), pendingIntent);
+    }
+
 
 }
