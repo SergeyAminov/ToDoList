@@ -29,6 +29,10 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        date_ev = format.format(calendarView.getDate());
+
         calendarView.setDate(new Date().getTime());
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -105,17 +109,12 @@ public class CalendarActivity extends AppCompatActivity {
 
     public void createEvent(View view) {
 
-
-
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        date_ev = format.format(calendarView.getDate());
-
-
         Intent i = new Intent(this, CreateEventActivity.class);
         i.putExtra("a",true);
         i.putExtra(KEY_DATE_EVENT, this.date_ev);
         i.putExtra(IS_CHECKBOX_ACTIVE, true);
         startActivity(i);
+
     }
 
 }

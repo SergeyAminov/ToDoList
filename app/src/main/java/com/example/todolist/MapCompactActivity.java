@@ -2,6 +2,7 @@ package com.example.todolist;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -84,6 +85,42 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        //Log.d(LOG_TAG, "onStart");
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        //Log.d(LOG_TAG, "onPause");
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        //Log.d(LOG_TAG, "onRestart");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //Log.d(LOG_TAG, "onResume");
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        //Log.d(LOG_TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        //Log.d(LOG_TAG, "onDestroy");
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         requestLocation();
@@ -113,21 +150,6 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
             Log.w("location address", "Cannot get Address!");
         }
         return strAdd;
-    }
-
-    public void onClick(View view){
-
-        getDeviceLocation();
-
-        location_ev = getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude());
-
-        Intent i = new Intent(this, CreateEventActivity.class);
-
-        i.putExtra("a",false);
-        i.putExtra(KEY_LOCATION_EVENT, location_ev);
-        i.putExtra(IS_CHECKBOX_ACTIVE, true);
-        startActivity(i);
-
     }
 
     public void requestLocation(){
@@ -255,19 +277,22 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+
+
     public void saveLoc(View view) {
 
-        if (!(lastAddress == null)){
+        if (lastAddress == null) {
+            getDeviceLocation();
+            location_ev = getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude());
+        }
+        else
             location_ev = getCompleteAddressString(lastAddress.getLatitude(), lastAddress.getLongitude());
-            Intent i = new Intent(this, CreateEventActivity.class);
-            i.putExtra("a",false);
-            i.putExtra(KEY_LOCATION_EVENT, location_ev);
-            i.putExtra(IS_CHECKBOX_ACTIVE, true);
-            startActivity(i);
-        }
-        else{
-            Toast.makeText(MapCompactActivity.this, "No location searched", Toast.LENGTH_LONG).show();
-        }
+
+        Intent i = new Intent(this, CreateEventActivity.class);
+        i.putExtra("b",false);
+        i.putExtra(KEY_LOCATION_EVENT, location_ev);
+        i.putExtra(IS_CHECKBOX_ACTIVE, true);
+        startActivity(i);
 
     }
 

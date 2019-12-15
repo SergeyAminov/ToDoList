@@ -61,7 +61,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Button btnFind;
     private Address lastAddress;
 
-
     public static final String KEY_LOCATION_EVENT = "date";
     public static final String IS_CHECKBOX_ACTIVE = "is checked";
     private String location_ev;
@@ -89,16 +88,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         //getPreferencesFromCreateEventActivity();
 
     }
-
-    /*private void getPreferencesFromCreateEventActivity() {
-
-        SharedPreferences myPrefs = getSharedPreferences(CreateEventActivity.class.getName(), MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = myPrefs.edit();
-
-        editor.commit();
-
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -340,7 +329,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (!(lastAddress == null)){
             location_ev = getCompleteAddressString(lastAddress.getLatitude(), lastAddress.getLongitude());
             Intent i = new Intent(this, CreateEventActivity.class);
-            i.putExtra("a",false);
+            i.putExtra("b",false);
             i.putExtra(KEY_LOCATION_EVENT, location_ev);
             i.putExtra(IS_CHECKBOX_ACTIVE, true);
             startActivity(i);

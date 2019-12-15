@@ -35,10 +35,18 @@ public class CreateEventActivity extends AppCompatActivity{
     private SQLiteDatabase readDB, writeDB;
 
     private SharedPreferences shared;
+    private String sharedPrefFile = "helloSharedPrefs";
     private final String SAVED_TITLE = "title";
     private final String SAVED_DESCRIPTION = "description";
     private final String SAVED_DATE = "date";
     private final String SAVED_TIME = "time";
+    //private final String SAVED_LOCATION = "location";
+    private final String SAVED_DATE_CHECKBOX = "date_checkbox";
+    private final String SAVED_TIME_CHECKBOX = "time_checkbox";
+    //private final String SAVED_LOCATION_CHECKBOX = "location_checkbox";
+    private final String IS_DATE_VISIBLE = "date_textbox";
+    private final String IS_TIME_VISIBLE = "time_textbox";
+
     private static final int NOTIFICATION_ID = 1;
     public static final String CHANNEL_ID ="01";
 
@@ -54,13 +62,13 @@ public class CreateEventActivity extends AppCompatActivity{
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        title = findViewById(R.id.title_id);
+        description = findViewById(R.id.description_id);
         dateOfEvent =findViewById(R.id.textViewDate);
         timeOfEvent = findViewById(R.id.textViewTime);
         locationOfEvent = findViewById(R.id.textViewLocation);
         time_event = findViewById(R.id.checkSetTime);
         date_event = findViewById(R.id.checkDate);
-        description = findViewById(R.id.description_id);
-        title = findViewById(R.id.title_id);
         location_event = findViewById(R.id.checkMap);
 
         //create SQLite db
@@ -68,28 +76,134 @@ public class CreateEventActivity extends AppCompatActivity{
         readDB = admin.getReadableDatabase();
         writeDB = admin.getWritableDatabase();
 
+        //initialize and restore preferences
+        shared = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         Intent i = getIntent();
 
-       if( i.getBooleanExtra("a",true)) {
-           final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
-           dateOfEvent.setText(messageDate);
-           date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE, false));
-           if (date_event.isChecked())
-               dateOfEvent.setVisibility(View.VISIBLE);
-       }
-       else {
-           final String messageLocation = i.getStringExtra(MapActivity.KEY_LOCATION_EVENT);
-           locationOfEvent.setText(messageLocation);
-           location_event.setChecked(i.getBooleanExtra(MapActivity.IS_CHECKBOX_ACTIVE, false));
-           if (location_event.isChecked())
-               locationOfEvent.setVisibility(View.VISIBLE);
-       }
+        loadPreferences(this.shared);
 
-        //SharedPreferences myPrefs = getSharedPreferences(MapActivity.class.getName(), MODE_PRIVATE);
+        if( i.getBooleanExtra("a",true)) {
+            final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
+            dateOfEvent.setText(messageDate);
+            date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE, false));
+            if (date_event.isChecked())
+                dateOfEvent.setVisibility(View.VISIBLE);
+        }
 
-       //loadPreferences(myPrefs);
-       //savePreferences();
+        else if( i.getBooleanExtra("b",true)) {
+            final String messageLocation = i.getStringExtra(MapActivity.KEY_LOCATION_EVENT);
+            locationOfEvent.setText(messageLocation);
+            location_event.setChecked(i.getBooleanExtra(MapActivity.IS_CHECKBOX_ACTIVE, false));
+            if (location_event.isChecked())
+                locationOfEvent.setVisibility(View.VISIBLE);
+        }
+        /*
+        else if( i.getBooleanExtra("c",true)) {
+            final String messageLocation = i.getStringExtra(MapCompactActivity.KEY_LOCATION_EVENT);
+            locationOfEvent.setText(messageLocation);
+            location_event.setChecked(i.getBooleanExtra(MapCompactActivity.IS_CHECKBOX_ACTIVE, false));
+            if (location_event.isChecked())
+                locationOfEvent.setVisibility(View.VISIBLE);
+        }
+        */
 
+        savePreferences(this.shared);
+
+    }
+
+    public void savePreferences(SharedPreferences shared) {
+
+        SharedPreferences.Editor preferencesEditor = shared.edit();
+
+        preferencesEditor.putString(SAVED_TITLE, title.getText().toString());
+        preferencesEditor.putString(SAVED_DESCRIPTION, description.getText().toString());
+
+        preferencesEditor.putString(SAVED_TIME, timeOfEvent.getText().toString());
+        preferencesEditor.putString(SAVED_DATE, dateOfEvent.getText().toString());
+        //preferencesEditor.putString(SAVED_LOCATION, locationOfEvent.getText().toString());
+
+        preferencesEditor.putBoolean(SAVED_TIME_CHECKBOX, time_event.isChecked());
+        preferencesEditor.putBoolean(SAVED_DATE_CHECKBOX, date_event.isChecked());
+        //preferencesEditor.putBoolean(SAVED_LOCATION_CHECKBOX, location_event.isChecked());
+
+        preferencesEditor.putBoolean(IS_TIME_VISIBLE, time_event.isChecked());
+        preferencesEditor.putBoolean(IS_DATE_VISIBLE, date_event.isChecked());
+
+        preferencesEditor.apply();
+
+    }
+
+    public void loadPreferences(SharedPreferences shared){
+
+        title.setText(shared.getString(SAVED_TITLE, ""));
+        description.setText(shared.getString(SAVED_DESCRIPTION, ""));
+
+        timeOfEvent.setText(shared.getString(SAVED_TIME, ""));
+        dateOfEvent.setText(shared.getString(SAVED_DATE, ""));
+        //locationOfEvent.setText(shared.getString(SAVED_LOCATION, ""));
+
+        time_event.setChecked(shared.getBoolean(SAVED_TIME_CHECKBOX, false));
+        date_event.setChecked(shared.getBoolean(SAVED_DATE_CHECKBOX, false));
+        //location_event.setChecked(shared.getBoolean(SAVED_LOCATION_CHECKBOX, false));
+
+        if (shared.getBoolean(IS_TIME_VISIBLE, false))
+            timeOfEvent.setVisibility(View.VISIBLE);
+        else
+            timeOfEvent.setVisibility(View.GONE);
+        if (shared.getBoolean(IS_DATE_VISIBLE, false))
+            dateOfEvent.setVisibility(View.VISIBLE);
+        else
+            dateOfEvent.setVisibility(View.GONE);
+
+
+    }
+
+    public void deletePreferences(SharedPreferences shared){
+
+        SharedPreferences.Editor preferencesEditor = shared.edit();
+        preferencesEditor.clear();
+        preferencesEditor.apply();
+
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        //Log.d(LOG_TAG, "onStart");
+    }
+
+    @Override
+    public void onPause(){
+        savePreferences(this.shared);
+        super.onPause();
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        //Log.d(LOG_TAG, "onRestart");
+    }
+
+    @Override
+    public void onResume(){
+
+        loadPreferences(this.shared);
+
+        super.onResume();
+        //Log.d(LOG_TAG, "onResume");
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        //Log.d(LOG_TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy(){
+        //deletePreferences(this.shared);
+        super.onDestroy();
+        //Log.d(LOG_TAG, "onDestroy");
     }
 
     //method for back button
@@ -146,20 +260,15 @@ public class CreateEventActivity extends AppCompatActivity{
 
     public void pickLocation(View view) {
 
-        /*SharedPreferences.Editor editor = this.shared.edit();
-        editor.putString(SAVED_TITLE, title.getText().toString());
-        editor.putString(SAVED_DESCRIPTION, description.getText().toString());
-        editor.putString(SAVED_DATE, dateOfEvent.getText().toString());
-        editor.putString(SAVED_TIME, timeOfEvent.getText().toString());
-        editor.commit();*/
-
-
         if (location_event.isChecked()) {
+
+            savePreferences(this.shared);
+
             Intent i = new Intent(this, MapCompactActivity.class);
             startActivity(i);
         }
         else {
-            timeOfEvent.setVisibility(View.GONE);
+            locationOfEvent.setVisibility(View.GONE);
         }
 
     }
@@ -185,6 +294,8 @@ public class CreateEventActivity extends AppCompatActivity{
 
         long rowId = writeDB.insert(DataBaseContract.TasksTable.TASKS_TABLE_NAME, null, values);
 
+        deletePreferences(this.shared);
+
         Toast.makeText(CreateEventActivity.this, rowId+ " ", Toast.LENGTH_LONG).show();
 
         Intent i = new Intent(this, MainActivity.class);
@@ -192,43 +303,9 @@ public class CreateEventActivity extends AppCompatActivity{
 
     }
 
-    /*public void savePreferences(){
+    public void createNotif(View view) {
 
-        shared = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = shared.edit();
-        editor.putString(SAVED_TITLE, title.getText().toString());
-        editor.putString(SAVED_DESCRIPTION, description.getText().toString());
-        editor.putString(SAVED_DATE, dateOfEvent.getText().toString());
-        editor.putString(SAVED_TIME, timeOfEvent.getText().toString());
-        editor.commit();
-
-    }
-
-
-
-    public void loadPreferences(SharedPreferences shared){
-
-        this.shared = shared;
-
-
-
-        this.shared = getPreferences(MODE_PRIVATE);
-        String savedTitle = this.shared.getString(SAVED_TITLE, "");
-        String savedDescription = this.shared.getString(SAVED_DESCRIPTION, "");
-        String savedDate = this.shared.getString(SAVED_DATE, "");
-        String savedTime = this.shared.getString(SAVED_TIME, "");
-
-        title.setText(savedTitle);
-        description.setText(savedDescription);
-        dateOfEvent.setText(savedDate);
-        timeOfEvent.setText(savedTime);
-    }
-    public void createNotif(View view)
-    {
-
-        if (view.isEnabled())
-
-        {
+        if (view.isEnabled()) {
             NotificationCompat.Builder notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_stat_event)
                     .setContentTitle(title.getText().toString())
@@ -241,7 +318,5 @@ public class CreateEventActivity extends AppCompatActivity{
         }
         
     }
-
-     */
 
 }
