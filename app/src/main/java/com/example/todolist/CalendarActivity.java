@@ -20,6 +20,7 @@ public class CalendarActivity extends AppCompatActivity {
     private String date_ev;
     public static final String KEY_DATE_EVENT = "date";
     public static final String IS_CHECKBOX_ACTIVE = "is checked";
+    public static final String KEYWORD_CALENDAR = "fromCalendarActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,7 @@ public class CalendarActivity extends AppCompatActivity {
     public void createEvent(View view) {
 
         Intent i = new Intent(this, CreateEventActivity.class);
-        i.putExtra("a",true);
+        i.putExtra(KEYWORD_CALENDAR,true);
         i.putExtra(KEY_DATE_EVENT, this.date_ev);
         i.putExtra(IS_CHECKBOX_ACTIVE, true);
         startActivity(i);

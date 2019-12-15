@@ -63,6 +63,7 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
 
     public static final String KEY_LOCATION_EVENT = "date";
     public static final String IS_CHECKBOX_ACTIVE = "is checked";
+    public static final String KEYWORD_MAP_COMPACT = "fromMapCompactActivity";
     private String location_ev;
 
     @Override
@@ -289,9 +290,17 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
             location_ev = getCompleteAddressString(lastAddress.getLatitude(), lastAddress.getLongitude());
 
         Intent i = new Intent(this, CreateEventActivity.class);
-        i.putExtra("b",false);
-        i.putExtra(KEY_LOCATION_EVENT, location_ev);
-        i.putExtra(IS_CHECKBOX_ACTIVE, true);
+        i.putExtra(KEYWORD_MAP_COMPACT,false);
+     //   i.putExtra(KEY_LOCATION_EVENT, location_ev);
+    //    i.putExtra(IS_CHECKBOX_ACTIVE, true);
+
+        SharedPreferences  shared = getSharedPreferences(CreateEventActivity.sharedPrefFile, MODE_PRIVATE);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.putBoolean(CreateEventActivity.sharedIsLoc, true);
+        editor.putString(CreateEventActivity.sharedLoc,location_ev);
+
+        editor.commit();
+
         startActivity(i);
 
     }

@@ -63,6 +63,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public static final String KEY_LOCATION_EVENT = "date";
     public static final String IS_CHECKBOX_ACTIVE = "is checked";
+    public static final String KEYWORD_MAP = "fromMapActivity";
     private String location_ev;
 
     @Override
@@ -328,8 +329,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         if (!(lastAddress == null)){
             location_ev = getCompleteAddressString(lastAddress.getLatitude(), lastAddress.getLongitude());
+
+            SharedPreferences  shared = getSharedPreferences(CreateEventActivity.sharedPrefFile, MODE_PRIVATE);
+            SharedPreferences.Editor editor = shared.edit();
+            editor.putBoolean(CreateEventActivity.sharedIsLoc, true);
+            editor.putString(CreateEventActivity.sharedLoc,location_ev);
+
+            editor.commit();
+
             Intent i = new Intent(this, CreateEventActivity.class);
-            i.putExtra("b",false);
+            i.putExtra(KEYWORD_MAP,false);
             i.putExtra(KEY_LOCATION_EVENT, location_ev);
             i.putExtra(IS_CHECKBOX_ACTIVE, true);
             startActivity(i);

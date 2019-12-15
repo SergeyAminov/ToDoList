@@ -35,7 +35,10 @@ public class CreateEventActivity extends AppCompatActivity{
     private SQLiteDatabase readDB, writeDB;
 
     private SharedPreferences shared;
-    private String sharedPrefFile = "helloSharedPrefs";
+    public static String sharedPrefFile = "helloSharedPrefs";
+    public static String sharedIsLoc = "is loc";
+    public static String sharedLoc = "shared loc";
+
     private final String SAVED_TITLE = "title";
     private final String SAVED_DESCRIPTION = "description";
     private final String SAVED_DATE = "date";
@@ -80,34 +83,37 @@ public class CreateEventActivity extends AppCompatActivity{
         shared = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         Intent i = getIntent();
 
-        loadPreferences(this.shared);
-
-        if( i.getBooleanExtra("a",true)) {
+        if( i.getBooleanExtra(CalendarActivity.KEYWORD_CALENDAR,true)) {
             final String messageDate = i.getStringExtra(CalendarActivity.KEY_DATE_EVENT);
             dateOfEvent.setText(messageDate);
-            date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE, false));
+           date_event.setChecked(i.getBooleanExtra(CalendarActivity.IS_CHECKBOX_ACTIVE, false));
+
             if (date_event.isChecked())
                 dateOfEvent.setVisibility(View.VISIBLE);
         }
 
-        else if( i.getBooleanExtra("b",true)) {
-            final String messageLocation = i.getStringExtra(MapActivity.KEY_LOCATION_EVENT);
-            locationOfEvent.setText(messageLocation);
-            location_event.setChecked(i.getBooleanExtra(MapActivity.IS_CHECKBOX_ACTIVE, false));
+        if( i.getBooleanExtra(MapActivity.KEYWORD_MAP,true)) {
+
+
+
+            location_event.setChecked(getSharedPreferences(sharedPrefFile,MODE_PRIVATE).getBoolean(CreateEventActivity.sharedIsLoc,false));
             if (location_event.isChecked())
                 locationOfEvent.setVisibility(View.VISIBLE);
-        }
-        /*
-        else if( i.getBooleanExtra("c",true)) {
-            final String messageLocation = i.getStringExtra(MapCompactActivity.KEY_LOCATION_EVENT);
+
+            // final String messageLocation = i.getStringExtra(MapActivity.KEY_LOCATION_EVENT);
+            String messageLocation = getSharedPreferences(sharedPrefFile,MODE_PRIVATE).getString(sharedLoc,"");
+
             locationOfEvent.setText(messageLocation);
+
+        }
+
+        if( i.getBooleanExtra(MapCompactActivity.KEYWORD_MAP_COMPACT,true)) {
+            final String messageLocationCompact = i.getStringExtra(MapCompactActivity.KEY_LOCATION_EVENT);
+            locationOfEvent.setText(messageLocationCompact);
             location_event.setChecked(i.getBooleanExtra(MapCompactActivity.IS_CHECKBOX_ACTIVE, false));
             if (location_event.isChecked())
                 locationOfEvent.setVisibility(View.VISIBLE);
         }
-        */
-
-        savePreferences(this.shared);
 
     }
 
@@ -150,6 +156,7 @@ public class CreateEventActivity extends AppCompatActivity{
             timeOfEvent.setVisibility(View.VISIBLE);
         else
             timeOfEvent.setVisibility(View.GONE);
+
         if (shared.getBoolean(IS_DATE_VISIBLE, false))
             dateOfEvent.setVisibility(View.VISIBLE);
         else
@@ -188,6 +195,19 @@ public class CreateEventActivity extends AppCompatActivity{
     public void onResume(){
 
         loadPreferences(this.shared);
+
+        if( getIntent().getBooleanExtra(MapActivity.KEYWORD_MAP,true)) {
+
+            location_event.setChecked(getSharedPreferences(sharedPrefFile,MODE_PRIVATE).getBoolean(CreateEventActivity.sharedIsLoc,false));
+            if (location_event.isChecked())
+                locationOfEvent.setVisibility(View.VISIBLE);
+
+            // final String messageLocation = i.getStringExtra(MapActivity.KEY_LOCATION_EVENT);
+            String messageLocation = getSharedPreferences(sharedPrefFile,MODE_PRIVATE).getString(sharedLoc,"");
+
+            locationOfEvent.setText(messageLocation);
+
+        }
 
         super.onResume();
         //Log.d(LOG_TAG, "onResume");
@@ -268,6 +288,15 @@ public class CreateEventActivity extends AppCompatActivity{
             startActivity(i);
         }
         else {
+
+            SharedPreferences  shared = getSharedPreferences(CreateEventActivity.sharedPrefFile, MODE_PRIVATE);
+            SharedPreferences.Editor editor = shared.edit();
+            editor.putBoolean(CreateEventActivity.sharedIsLoc, false);
+            editor.putString(CreateEventActivity.sharedLoc,"");
+
+            editor.commit();
+
+
             locationOfEvent.setVisibility(View.GONE);
         }
 
