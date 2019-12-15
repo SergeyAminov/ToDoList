@@ -4,4 +4,16 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="my_card_color">#80D8FF</color>
+
+    <color name="color_secondary_variant">#018786</color>
+
+    <color name="color_background">#ffffff</color>
+    <color name="color_surface">#ffffff</color>
+    <color name="color_error">#b00020</color>
+
+    <color name="color_on_primary">#ffffff</color>
+    <color name="color_on_secondary">#000000</color>
+    <color name="color_on_background">#000000</color>
+    <color name="color_on_surface">#000000</color>
+    <color name="color_on_error">#ffffff</color>
 </resources>

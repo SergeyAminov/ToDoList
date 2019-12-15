@@ -1,15 +1,23 @@
 package com.example.todolist;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+
+    public static final String APP_PREFERENCES = "mysettings";
+    public static final String APP_PREFERENCES_CHECK = "CheckSwitch";
+    SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +27,28 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Switch aSwitch = findViewById(R.id.switch1);
+        aSwitch.setOnCheckedChangeListener(this);
+
+        settings = getSharedPreferences(APP_PREFERENCES, 0);
+
+        if(settings.contains(APP_PREFERENCES_CHECK)) {
+            aSwitch.setChecked(settings.getBoolean(APP_PREFERENCES_CHECK, false));
+        }
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        settings = getSharedPreferences(APP_PREFERENCES, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(APP_PREFERENCES_CHECK, isChecked);
+        editor.apply();
     }
 
     @Override
